@@ -48,10 +48,13 @@ class RemoteFeedLoaderTests: XCTestCase {
     
     func test_load_deliversErrorOnClientError() {
         
+        //Given
         let (sut, client) = makeSUT()
         
+        //When
         expect(sut, toCompleteWith: .failure(.connectivity), when: {
             let clientError = NSError(domain: "Test", code: 0)
+            //Then
             client.complete(with: clientError)
         })
     }
@@ -62,9 +65,12 @@ class RemoteFeedLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
         
         let samples = [199, 201, 300, 400, 500].enumerated()
+        
+        //When
         samples.forEach { index, code in
             expect(sut, toCompleteWith: .failure(.invalidData), when: {
                 let json = makeItemsJSON([])
+                //Then
                 client.complete(withStatusCode: code, data: json,at: index)
             })
         }
@@ -72,24 +78,34 @@ class RemoteFeedLoaderTests: XCTestCase {
     }
     
     func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
+        
+        //Given
         let (sut, client) = makeSUT()
         
+        //When
         expect(sut, toCompleteWith: .failure(.invalidData), when: {
             let invalidJSON = Data("invalid json".utf8)
+            //Then
             client.complete(withStatusCode: 200, data: invalidJSON)
         })
     }
     
     func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
+        
+        //Given
         let (sut, client) = makeSUT()
 
+        //When
         expect(sut, toCompleteWith: .success([]), when: {
             let emptyListJSON = makeItemsJSON([])
+            //Then
             client.complete(withStatusCode: 200, data: emptyListJSON)
         })
     }
     
     func test_load_deliversitemsOn200HTTPResponseWithJSONItems() {
+        
+        //Given
         let (sut, client) = makeSUT()
         
         let item1 = makeItem(id: UUID(), imageURL: URL(string: "http://a-url.com")!)
@@ -99,8 +115,10 @@ class RemoteFeedLoaderTests: XCTestCase {
         
         let items = [item1.model, item2.model]
         
+        //When
         expect(sut, toCompleteWith: .success(items), when: {
             let json = makeItemsJSON([item1.json, item2.json])
+            //Then
             client.complete(withStatusCode: 200, data: json)
         })
     }

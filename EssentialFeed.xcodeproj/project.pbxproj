@@ -91,8 +91,8 @@
 		57600FE9280F14A600F34CD6 /* EssentialFeedTests */ = {
 			isa = PBXGroup;
 			children = (
-				57E2408328186E1700BBF395 /* FeedAPI */,
 				57AD169C282598D500313625 /* URLSessionHTTPClientTests.swift */,
+				57E2408328186E1700BBF395 /* FeedAPI */,
 			);
 			path = EssentialFeedTests;
 			sourceTree = "<group>";
